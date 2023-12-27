@@ -82,11 +82,11 @@ int main()
     Shader shader("1.2.pbr.vs", "1.2.pbr.fs");
 
     shader.use();
-    shader.setInt("albedoMap", 0);
-    shader.setInt("normalMap", 1);
-    shader.setInt("metallicMap", 2);
-    shader.setInt("roughnessMap", 3);
-    shader.setInt("aoMap", 4);
+    shader.setInt("albedoMap", 0); // GL_TEXTURE0 = 0 
+    shader.setInt("normalMap", 1); // GL_TEXTURE0 = 1 
+    shader.setInt("metallicMap", 2); // GL_TEXTURE0 = 2 
+    shader.setInt("roughnessMap", 3); // GL_TEXTURE0 = 3 
+    shader.setInt("aoMap", 4); // GL_TEXTURE0 = 4 
 
     // load PBR material textures
     // --------------------------
@@ -112,8 +112,8 @@ int main()
     // --------------------------------------------------
     glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     shader.use();
-    shader.setMat4("projection", projection);
-
+    shader.setMat4("projection", projection); // 원근투영 (원근감)
+    
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -135,10 +135,10 @@ int main()
 
         shader.use();
         glm::mat4 view = camera.GetViewMatrix();
-        shader.setMat4("view", view);
-        shader.setVec3("camPos", camera.Position);
+        shader.setMat4("view", view); // view matrix (4by4)
+        shader.setVec3("camPos", camera.Position); // camera position
 
-        glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE0); // GL_TEXTURE0 = 0 
         glBindTexture(GL_TEXTURE_2D, albedo);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, normal);
@@ -268,9 +268,9 @@ void renderSphere()
         glGenBuffers(1, &vbo);
         glGenBuffers(1, &ebo);
 
-        std::vector<glm::vec3> positions;
-        std::vector<glm::vec2> uv;
-        std::vector<glm::vec3> normals;
+        std::vector<glm::vec3> positions; // 위치 좌표
+        std::vector<glm::vec2> uv; // 텍스쳐 좌표
+        std::vector<glm::vec3> normals; // 노말벡터
         std::vector<unsigned int> indices;
 
         const unsigned int X_SEGMENTS = 64;
@@ -280,8 +280,8 @@ void renderSphere()
         {
             for (unsigned int y = 0; y <= Y_SEGMENTS; ++y)
             {
-                float xSegment = (float)x / (float)X_SEGMENTS;
-                float ySegment = (float)y / (float)Y_SEGMENTS;
+                float xSegment = (float)x / (float)X_SEGMENTS; // 경도 분할 수
+                float ySegment = (float)y / (float)Y_SEGMENTS; // 위도 분할 수
                 float xPos = std::cos(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
                 float yPos = std::cos(ySegment * PI);
                 float zPos = std::sin(xSegment * 2.0f * PI) * std::sin(ySegment * PI);

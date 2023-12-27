@@ -1,21 +1,21 @@
 #version 330 core
-out vec4 FragColor;
-in vec2 TexCoords;
+out vec4 FragColor; // 최종 픽셀값
+in vec2 TexCoords; // 출력 vertex 텍스쳐좌표 -> 픽셀세이더의 입력
 in vec3 WorldPos;
 in vec3 Normal;
 
 // material parameters
-uniform sampler2D albedoMap;
+uniform sampler2D albedoMap; // 벽돌 이미지 정보 2차원 배열
 uniform sampler2D normalMap;
 uniform sampler2D metallicMap;
 uniform sampler2D roughnessMap;
 uniform sampler2D aoMap;
 
 // lights
-uniform vec3 lightPositions[4];
-uniform vec3 lightColors[4];
+uniform vec3 lightPositions[4]; // 광원 위치
+uniform vec3 lightColors[4]; // 광원 색
 
-uniform vec3 camPos;
+uniform vec3 camPos; // camera position
 
 const float PI = 3.14159265359;
 // ----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 // ----------------------------------------------------------------------------
 void main()
 {		
-    vec3 albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
+    vec3 albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2)); // 감마 보정
     float metallic  = texture(metallicMap, TexCoords).r;
     float roughness = texture(roughnessMap, TexCoords).r;
     float ao        = texture(aoMap, TexCoords).r;
@@ -93,16 +93,16 @@ void main()
     // calculate reflectance at normal incidence; if dia-electric (like plastic) use F0 
     // of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)    
     vec3 F0 = vec3(0.04); 
-    F0 = mix(F0, albedo, metallic);
+    F0 = mix(F0, albedo, metallic); // F0 = (1-metalic)F0 + (metalic)albedo
 
     // reflectance equation
     vec3 Lo = vec3(0.0);
-    for(int i = 0; i < 4; ++i) 
+    for(int i = 0; i < 4; ++i) // 광원의 수 만큼 적용
     {
         // calculate per-light radiance
-        vec3 L = normalize(lightPositions[i] - WorldPos);
-        vec3 H = normalize(V + L);
-        float distance = length(lightPositions[i] - WorldPos);
+        vec3 L = normalize(lightPositions[i] - WorldPos); // Light vector
+        vec3 H = normalize(V + L); // Half vector
+        float distance = length(lightPositions[i] - WorldPos); // 광원-물체간 거리
         float attenuation = 1.0 / (distance * distance);
         vec3 radiance = lightColors[i] * attenuation;
 
@@ -139,10 +139,10 @@ void main()
     
     vec3 color = ambient + Lo;
 
-    // HDR tonemapping
+    // 후처리 step1 : HDR tonemapping
     color = color / (color + vec3(1.0));
-    // gamma correct
+    // 후처리 step2 : gamma correct (감마보정)
     color = pow(color, vec3(1.0/2.2)); 
 
-    FragColor = vec4(color, 1.0);
+    FragColor = vec4(color, 1.0); // 최종 렌더링 결과 값
 }
