@@ -1,0 +1,4 @@
+﻿  Building Custom Rule F:/OpenGL/LearnOpenGL-master/CMakeLists.txt
+  framebuffers.cpp
+LINK : warning LNK4098: 'MSVCRTD' defaultlib가 다른 라이브러리와 충돌합니다. /NODEFAULTLIB:library를 사용하십시오.
+  4.advanced_opengl__5.1.framebuffers.vcxproj -> F:\OpenGL\LearnOpenGL-master\bin\4.advanced_opengl\Release\4.advanced_opengl__5.1.framebuffers.exe
