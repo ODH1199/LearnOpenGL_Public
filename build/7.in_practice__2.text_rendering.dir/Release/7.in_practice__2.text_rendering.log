@@ -1,3 +1,0 @@
-﻿     F:/OpenGL/LearnOpenGL-master/build/Release/7.in_practice__2.text_rendering.lib 라이브러리 및 F:/OpenGL/LearnOpenGL-master/build/Release/7.in_practice__2.text_rendering.exp 개체를 생성하고 있습니다.
-LINK : warning LNK4098: 'MSVCRTD' defaultlib가 다른 라이브러리와 충돌합니다. /NODEFAULTLIB:library를 사용하십시오.
-  7.in_practice__2.text_rendering.vcxproj -> F:\OpenGL\LearnOpenGL-master\bin\7.in_practice\Release\7.in_practice__2.text_rendering.exe
